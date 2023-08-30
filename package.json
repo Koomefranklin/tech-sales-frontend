@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev & json-server db.json -p 3001 -H 127.0.0.1",
+    "dev": "next -p 8080 & json-server db.json -p 8888",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
