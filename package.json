@@ -3,14 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next -p 8080 & json-server db.json -p 8888",
+    "dev": "next -p 8080",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@mantine/core": "^6.0.19",
     "@mantine/hooks": "^6.0.19",
+    "@mui/material": "^5.14.7",
+    "@nextui-org/react": "^2.1.7",
     "@react-icons/all-files": "^4.1.0",
     "autoprefixer": "10.4.15",
     "eslint": "8.48.0",

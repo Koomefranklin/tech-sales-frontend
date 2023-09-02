@@ -243,5 +243,53 @@
       "category": "accessories",
       "sub-category": "storage"
     }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Franklin"
+    },
+    {
+      "id": 2,
+      "name": "Koome"
+    }
+  ],
+  "cart": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "device_id": 1,
+      "quantity": 3
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "device_id": 22,
+      "quantity": 5
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "device_id": 5,
+      "quantity": 3
+    },
+    {
+      "id": 4,
+      "user_id": 2,
+      "device_id": 13,
+      "quantity": 5
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "device_id": 51,
+      "quantity": 3
+    },
+    {
+      "id": 6,
+      "user_id": 2,
+      "device_id": 2,
+      "quantity": 5
+    }
   ]
 }

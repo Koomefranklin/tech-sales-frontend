@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import DataCard, { SuggestionCard } from "@/components/DataCard";
+import DataCard, { SuggestionCard } from "@/components/Templates";
 import { FaCartPlus } from "react-icons/fa6";
 import Link from "next/link";
+import ShuffleArray from "@/components/Arrangements";
+import { useInterval } from "@mantine/hooks";
 
 
 const DevicePage = ({ params }) => {
@@ -14,7 +16,7 @@ const DevicePage = ({ params }) => {
 
   useEffect(() => {
     const fetchDevice = async () => {
-      const res = await fetch(`http://localhost:8888/devices/${deviceId}`, {
+      const res = await fetch(`http://localhost:8888/api/devices/${deviceId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +32,7 @@ const DevicePage = ({ params }) => {
 
   useEffect(() => {
     const fetchDevices = async () => {
-      const res = await fetch(`http://localhost:8888/devices`, {
+      const res = await fetch(`http://localhost:8888/api/devices`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -44,26 +46,38 @@ const DevicePage = ({ params }) => {
     fetchDevices();
   }, []);
 
-  const category = devices.filter(item => !deviceId.includes(item.id) && item.category === device.category);
+
+
+  ShuffleArray({queryArray: devices});
+  const currentCategory = devices.filter(item => !deviceId.includes(item.id) && item.category === device.category);
   const suggestions = devices.filter(item => !deviceId.includes(item.id) && item.category !== device.category);
-  console.log(suggestions.sort());
   function handleAddToCart() {
 
   }
 
   return (
     <div>
-    <div className="flex w-full linear justify-center">
-      <Image
-      src={device.image}
-      alt={device.model}
-      width={500}
-      height={500}
-      />
-    </div>
+      <div className="flex justify-center w-full">
+        <div className="flex flex-row w-1/3 gap-1 overflow-hidden">
+          <Image
+          src={device.image_url}
+          alt={device.device_model}
+          width={500}
+          height={500}
+          className="animate-marquee"
+          />
+          <Image
+          src={device.image_url}
+          alt={device.device_model}
+          width={500}
+          height={500}
+          className="animate-marquee"
+          />
+        </div>
+      </div>
     <div className="bg-gray-600">
       <div className="mx-20">
-          <div className="font-bold text-center text-xl">{device.brand + " " + device.model}</div>
+          <div className="font-bold text-center text-xl">{(device.device_brand + " " + device.device_model).toUpperCase()}</div>
           <div className="text-green-500 text-xl mx-20 justify-right">{device.price}</div>
         <div>
           {device.description}
@@ -74,7 +88,7 @@ const DevicePage = ({ params }) => {
       <h1 className="bg-gray-500 w-full text-center"> More on {device.category}</h1>
       <div className="flex flex-row gap-1 h-48 text-xs overflow-x-auto overflow-y-hidden">
         <SuggestionCard
-        devices={category}
+        devices={currentCategory}
         />
       </div>
     </div>
@@ -89,11 +103,11 @@ const DevicePage = ({ params }) => {
         />
       </div>
     </div>
-    <div className="fixed bottom-0  min-w-fit w-screen flex flex-row bg-gray-800 justify-center ">
+    <div className="fixed bottom-0  min-w-fit w-screen flex flex-row bg-gray-800 justify-center text-white">
       <button
       onClick={handleAddToCart}
       className="flex flex-row">
-        <FaCartPlus size={28}/> Add to Cart
+        <FaCartPlus size={28} className="animate-bounce"/> Add to Cart
       </button>
     </div>
     </div>

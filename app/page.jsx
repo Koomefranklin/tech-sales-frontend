@@ -1,5 +1,5 @@
 "use client"
-import DataCard from "@/components/DataCard";
+import DataCard from "@/components/Templates";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
@@ -13,7 +13,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchDevices = async () => {
-      const res = await fetch("http://localhost:8888/devices", {
+      const res = await fetch("http://localhost:8888/api/devices", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
