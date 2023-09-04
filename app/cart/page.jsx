@@ -5,15 +5,32 @@ import { FaCartFlatbed, FaMinus, FaPlus } from "react-icons/fa6";
 import { Table, TableBody, TableCell, TableHead, TableRow, Tooltip, ButtonGroup, TableFooter } from "@mui/material";
 import Image from "next/image";
 import { BsFillCartDashFill } from "react-icons/bs";
+import LoginPage from "@/components/Login";
 
 
 export default function CartPage() {
   const user = {
     id: 1,
-    name: "Franklin"
+    name: "Niklaus"
   };
   const [ devices, setDevices ] = useState([]);
   const [ userCart, setUserCart ] = useState([]);
+  const [token, setToken] = useState(null);
+  const [ cartDetails, setCartdetails ] = useState([]);
+  const [ userDevices, setUserdevices ] = useState([]);
+
+  useEffect(() => {
+    if(window) {
+      setToken(JSON.parse(sessionStorage.getItem("user_token")));
+    }
+  }, []);
+
+    // Testing 
+    const tokenString = JSON.stringify(token);
+    const tokenBase64 = btoa(tokenString);
+  
+    // Testing
+
 
   useEffect(() => {
     const fetchUserCart = async () => {
@@ -22,14 +39,14 @@ export default function CartPage() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // Authorization: `Bearer ${token}`,
+          // Authorization: 'Bearer ' + tokenBase64, // `Bearer ${token}`,
         },
       });
       const data = await res.json();
       setUserCart(data);
     };
     fetchUserCart();
-  }, []);
+  }, [token]);
 
   useEffect(() => {  
     const fetchDevices = async () => {
@@ -38,7 +55,6 @@ export default function CartPage() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // Authorization: `Bearer ${token}`,
         },
       });
       const data = await res.json();
@@ -46,15 +62,11 @@ export default function CartPage() {
     };
     fetchDevices();
   }, []);
-  // const products = 
-  const cartDevices = userCart.map(item => item.device_id);
-  const userDevices = devices.filter(device => cartDevices.includes(device.id));
-
-  const prices = userCart.map(item => 
-    {const amounts = item.price * item.quantity}
-    );
-  const quantity = userCart.map(item => item.quantity);
-  // const totalAmount = 
+  
+  useEffect(() => {
+      setCartdetails(userCart.map(item => item.product_id));
+      setUserdevices(devices.filter(device => cartDetails.includes(device.id)));
+  }, [userCart]);
 
   function handleDecreaseQuantity() {
     console.log("decrease");
@@ -67,9 +79,12 @@ export default function CartPage() {
   function handleRemoveFramCart () {
     console.log("Remove");
   }
+  console.log(cartDetails);
+
 
   return (
     <>
+    {!token ? <LoginPage handleIsLoggedIn/> :
       <div className="flex justify-center rounded">
           <Table aria-label="Cart Items" className="uppercase bg-white md:w-1/2 rounded">
             <TableHead >
@@ -108,7 +123,7 @@ export default function CartPage() {
                     {device.price}
                   </TableCell>
                   <TableCell>
-                    {2}
+                    {device.quantity}
                   </TableCell>
                   <TableCell>
                     {device.price * 2}
@@ -152,6 +167,7 @@ export default function CartPage() {
             </TableFooter>
           </Table>
       </div>
+    }
     </>
   )
 

@@ -14,6 +14,8 @@ import { AiFillHome } from "react-icons/ai"
 import { BiCategory, BiSolidServer } from "react-icons/bi"
 import { NavLink } from "@mantine/core";
 import { useState, useEffect } from "react";
+import LoginPage from '@/components/Login';
+import { Button } from '@mui/material';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,8 +24,29 @@ const inter = Inter({ subsets: ['latin'] })
 export default function RootLayout({ children }) {
   const router = useRouter();
   const [navCollapsed, setNavCollapsed] = useState(false);
+  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    if (window) {
+      setUser(JSON.parse(sessionStorage.getItem("user_token")));
+      router.refresh();
+    }
+  }, [isLoggedIn]);
 
+  function handleLogout() {
+    fetch("http://localhost:8888/api/auth/logout/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }).then((res) => {
+      setUser(null);
+      sessionStorage.clear();
+      router.refresh();
+    });
+  }
 
   return (
     <html lang="en">
@@ -189,38 +212,27 @@ export default function RootLayout({ children }) {
                 <Link className="flex me-10 "
                 href={"/account"}
                 >
-                  <RiUserSettingsLine size={28} color="white" title='Logged in user' /> Franklin 
+                  <RiUserSettingsLine size={28} color="white" title='Logged in user' /> 
+                  {user ? "User" : "Not Logged in"} 
                 </Link>
+                {user ?
+                <Button
+                onClick={handleLogout}
+                className='bg-blue-500 text-white'
+                >Logout</Button>
+                : <Button
+                // onClick={<LoginPage/>}
+                className='bg-blue-400 text-white'
+                >Login</Button>
+                }
               </div>
-              {/* <div className="top-section">
-                <div className="flex flex-row justify-between px-10 my-2.5">
-                  <MdMenuOpen size={48} />
-                  {user ? (
-                    <h1 className="font-bold text-xl self-end mx-2">
-                      Welcome, {user.user["firstname"]}
-                    </h1>
-                  ) : null}
-                  <div className="user-menu flex flex-row">
-                    <FaUserGear size={48} className="mx-2" />
-                    {user ? (
-                      <h1
-                        className="font-bold text-xl self-end mx-2 cursor-pointer"
-                        onClick={handleLogout}
-                      >
-                        Logout
-                      </h1>
-                    ) : (
-                      null
-                    )}
-                  </div>
-                </div>
-                <hr className="border-zinc-900" />
-              </div>
-              {user ? <div className="main-body px-11 py-5">{children}</div> : <LoginPage handleIsLoggedIn={handleIsLoggedIn}/>} */}
-              <div>{children}</div>
+              
+              <div>{children}</div> 
+              
               </div>
           </div>
         </div>
+      
       </body>
     </html>
   )
