@@ -16,6 +16,8 @@ import { NavLink } from "@mantine/core";
 import { useState, useEffect } from "react";
 import LoginPage from '@/components/Login';
 import { Button } from '@mui/material';
+import generateMetadata from '@/components/GenerateMetadata';
+import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,8 +26,30 @@ const inter = Inter({ subsets: ['latin'] })
 export default function RootLayout({ children }) {
   const router = useRouter();
   const [navCollapsed, setNavCollapsed] = useState(false);
-  const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [ token, setToken ] = useState("");
+  
+
+  useEffect(() => {if (window && user) {
+    setToken(JSON.parse(sessionStorage.getItem("user_token")).key);
+  }}, [isLoggedIn]);
+
+  useEffect(() => {
+    const fetchUserDetails = async() => {
+      const res = await fetch(`http://localhost:8888/api/auth/user`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Token ${token}`,
+        },
+      });
+      const data = await res.json();
+      setUser(data);
+    }
+    fetchUserDetails();
+  }, [token]);
 
   useEffect(() => {
     if (window) {
@@ -48,9 +72,16 @@ export default function RootLayout({ children }) {
     });
   }
 
+  function handleIsLoggedIn(){
+    setIsLoggedIn(isLoggedIn => !isLoggedIn);
+    router.refresh();
+  }
+
   return (
     <html lang="en">
-      <body>
+      
+      <body className={inter.className}>
+        {token ? 
         <div > 
           <div className="flex flex-row ">
             <div className="fixed right-0 bottom-0 top-0 w-2 bg-gray-950"></div>
@@ -210,21 +241,12 @@ export default function RootLayout({ children }) {
                   <Link href="/">Mburus Tech</Link>
                 </h1>
                 <Link className="flex me-10 "
+                title='User profile'
                 href={"/account"}
                 >
                   <RiUserSettingsLine size={28} color="white" title='Logged in user' /> 
-                  {user ? "User" : "Not Logged in"} 
+                  {user.first_name} 
                 </Link>
-                {user ?
-                <Button
-                onClick={handleLogout}
-                className='bg-blue-500 text-white'
-                >Logout</Button>
-                : <Button
-                // onClick={<LoginPage/>}
-                className='bg-blue-400 text-white'
-                >Login</Button>
-                }
               </div>
               
               <div>{children}</div> 
@@ -232,7 +254,8 @@ export default function RootLayout({ children }) {
               </div>
           </div>
         </div>
-      
+        : <LoginPage handleIsLoggedIn={handleIsLoggedIn}/>
+        }
       </body>
     </html>
   )
