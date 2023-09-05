@@ -49,7 +49,7 @@ export default function HomePage() {
           />
         </div>
       </div>
-      <div>
+      <div className="w-full">
         <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="laptops">Laptops</h1>
         <div className="flex flex-row h-max overflow-x-auto gap-1 my-2">
           <DataCard
@@ -61,7 +61,7 @@ export default function HomePage() {
         </div>
       </div>
       <div>
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center">Monitors</h1>
+        <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="monitors">Monitors</h1>
         <div className="flex flex-row h-max overflow-x-auto gap-1 my-2">
           <DataCard
           devices={monitors}

@@ -1,14 +1,15 @@
 "use client"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
-export default function LoginPage() {
+export default function LoginPage(handleIsLoggedIn){
   const [errors, setErrors] = useState();
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
-  const [ hasAccount, setHassAccount ] = useState(true);
+  // const [ hasAccount, setHassAccount ] = useState(true);
   const [ signupForm, setSignupForm ] = useState({
     email: "",
     username: "",
@@ -46,6 +47,8 @@ export default function LoginPage() {
 
           // store the token in a session cookie
           sessionStorage.setItem("user_token", JSON.stringify(token));
+          handleIsLoggedIn;
+          router.refresh();
         });
       } else {
         res.json().then((err) => setErrors(err.error));

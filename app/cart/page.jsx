@@ -5,41 +5,24 @@ import { FaCartFlatbed, FaMinus, FaPlus } from "react-icons/fa6";
 import { Table, TableBody, TableCell, TableHead, TableRow, Tooltip, ButtonGroup, TableFooter } from "@mui/material";
 import Image from "next/image";
 import { BsFillCartDashFill } from "react-icons/bs";
-import LoginPage from "@/components/Login";
+import { useRouter } from "next/navigation";
 
 
 export default function CartPage() {
-  const user = {
-    id: 1,
-    name: "Niklaus"
-  };
   const [ devices, setDevices ] = useState([]);
   const [ userCart, setUserCart ] = useState([]);
-  const [token, setToken] = useState(null);
-  const [ cartDetails, setCartdetails ] = useState([]);
-  const [ userDevices, setUserdevices ] = useState([]);
-
-  useEffect(() => {
-    if(window) {
-      setToken(JSON.parse(sessionStorage.getItem("user_token")));
-    }
-  }, []);
-
-    // Testing 
-    const tokenString = JSON.stringify(token);
-    const tokenBase64 = btoa(tokenString);
-  
-    // Testing
-
+  const token = JSON.parse(sessionStorage.getItem("user_token")).key;
+  const router = useRouter();
+  // const [ totalAmount, setTotalAmount ] = useState()
 
   useEffect(() => {
     const fetchUserCart = async () => {
-      const res = await fetch(`http://localhost:8888/api/cart/?user_id=${user.id}`, {
+      const res = await fetch(`http://localhost:8888/api/cart`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // Authorization: 'Bearer ' + tokenBase64, // `Bearer ${token}`,
+          Authorization: `Token ${token}`,
         },
       });
       const data = await res.json();
@@ -47,26 +30,14 @@ export default function CartPage() {
     };
     fetchUserCart();
   }, [token]);
-
-  useEffect(() => {  
-    const fetchDevices = async () => {
-      const res = await fetch(`http://localhost:8888/api/devices`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await res.json();
-      setDevices(data);
-    };
-    fetchDevices();
-  }, []);
   
-  useEffect(() => {
-      setCartdetails(userCart.map(item => item.product_id));
-      setUserdevices(devices.filter(device => cartDetails.includes(device.id)));
-  }, [userCart]);
+  const amounts = userCart.map(item => item.product.price * item.quantity);
+  
+  let totalAmount = 0;
+  amounts.forEach(amount => {
+    totalAmount = totalAmount + amount
+  });
+
 
   function handleDecreaseQuantity() {
     console.log("decrease");
@@ -79,12 +50,13 @@ export default function CartPage() {
   function handleRemoveFramCart () {
     console.log("Remove");
   }
-  console.log(cartDetails);
 
-
+  function handleRowClick (id) {
+    router.push(`/categories/devices/${id}`)
+  }
+ 
   return (
     <>
-    {!token ? <LoginPage handleIsLoggedIn/> :
       <div className="flex justify-center rounded">
           <Table aria-label="Cart Items" className="uppercase bg-white md:w-1/2 rounded">
             <TableHead >
@@ -107,26 +79,28 @@ export default function CartPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {userDevices.map(device => (
+              {userCart.map(item => (
                 <TableRow
-                key={device.id}
+                key={item.id}
+                hover={true}
+                onClick={handleRowClick(item.id)}
                 >
                   <TableCell className="flex flex-row">
                     <Image
-                    src={device.image_url}
-                    alt={device.device_model}
+                    src={item.product.image_url}
+                    alt={item.product.device_model}
                     height={100}
                     width={100}
-                    /> {device.device_brand + " " + device.device_model}
+                    /> {item.product.device_brand + " " + item.product.device_model}
                   </TableCell>
                   <TableCell>
-                    {device.price}
+                    {item.product.price}
                   </TableCell>
                   <TableCell>
-                    {device.quantity}
+                    {item.quantity}
                   </TableCell>
                   <TableCell>
-                    {device.price * 2}
+                    {item.product.price * item.quantity}
                   </TableCell>
                   <TableCell>
                     <ButtonGroup className="gap-1">
@@ -160,14 +134,16 @@ export default function CartPage() {
             </TableBody>
             <TableFooter >
               <TableRow className="flex justify-center">
-                <TableCell className="flex flex-row w-full font-bold">
-                  Total amount: {}
+                <TableCell className="font-bold">
+                  Total amount: 
+                </TableCell>
+                <TableCell className="font_bold text-l">
+                {totalAmount}
                 </TableCell>
               </TableRow>
             </TableFooter>
           </Table>
       </div>
-    }
     </>
   )
 

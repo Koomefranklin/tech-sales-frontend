@@ -13,6 +13,9 @@ const DevicePage = ({ params }) => {
   const { deviceId } = params;
   const [ device, setDevice ] = useState([]);
   const [ devices, setDevices ] = useState([]);
+  const [ properties, setProperties ] = useState([]);
+  const image_url = '/home/koome/Documents/Projects/Python/E-COMMERCE/backend' + JSON.stringify(device.image);
+  // console.log(image_url)
 
   useEffect(() => {
     const fetchDevice = async () => {
@@ -26,6 +29,7 @@ const DevicePage = ({ params }) => {
       });
       const data = await res.json();
       setDevice(data);
+      setProperties(data.productproperties);
     };
     fetchDevice();
   }, [deviceId]);
@@ -46,7 +50,7 @@ const DevicePage = ({ params }) => {
     fetchDevices();
   }, []);
 
-
+  
 
   ShuffleArray({queryArray: devices});
   const currentCategory = devices.filter(item => !deviceId.includes(item.id) && item.category === device.category);
@@ -60,30 +64,32 @@ const DevicePage = ({ params }) => {
       <div className="flex justify-center w-full">
         <div className="flex flex-row w-1/3 gap-1 overflow-hidden">
           <Image
-          src={device.image_url}
+          src={image_url}
           alt={device.device_model}
           width={500}
           height={500}
-          className="animate-marquee"
-          />
-          <Image
-          src={device.image_url}
-          alt={device.device_model}
-          width={500}
-          height={500}
-          className="animate-marquee"
+          className=""
           />
         </div>
       </div>
     <div className="bg-gray-600">
-      <div className="mx-20">
-          <div className="font-bold text-center text-xl">{(device.device_brand + " " + device.device_model).toUpperCase()}</div>
+      <div className="mx-20 ">
+          <div className="font-bold text-center text-xl uppercase">{(device.device_brand + " " + device.device_model)}</div>
           <div className="text-green-500 text-xl mx-20 justify-right">{device.price}</div>
         <div>
           {device.description}
         </div>
+        <div>
+          <div className="text-center">
+            Properties
+          </div>
+          {properties ? properties.map(property => (
+          <div className="">{property}</div>)) 
+          : <div className="animate-bounce">Loading...</div>}
+        </div>
       </div>
     </div>
+    
     <div className="h-fit">
       <h1 className="bg-gray-500 w-full text-center"> More on {device.category}</h1>
       <div className="flex flex-row gap-1 h-48 text-xs overflow-x-auto overflow-y-hidden">
