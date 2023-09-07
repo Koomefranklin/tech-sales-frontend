@@ -31,11 +31,13 @@ export default function MonitorsPage() {
 	return (
     <div>
       <div>
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="monitors">Monitors</h1>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center" id="monitors">Monitors</h1>
         <div className="flex flex-wrap h-max overflow-x-hidden overflow-y-auto gap-1 my-2">
           <DataCard
           devices={monitors}
           keys={keys}
+          width={400}
+          height={400}
           />
         </div>
       </div>

@@ -31,11 +31,11 @@ export default function HeadsetsPage() {
 	return (
     <div>
       <div>
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="laptops">Headsets</h1>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center" id="laptops">Headsets</h1>
         <div className="flex flex-wrap h-max overflow-x-hidden overflow-y-auto gap-1 my-2">
           <DataCard
           devices={headsets}
-          keys={keys}
+          keys={keys} height={400} weight={400}
           />
         </div>
       </div>

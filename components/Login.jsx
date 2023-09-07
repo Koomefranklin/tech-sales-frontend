@@ -26,7 +26,7 @@ export default function LoginPage(handleIsLoggedIn){
     const value = e.target.value;
     setLoginForm({ ...loginForm, [name]: value });
   }
-
+  
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -48,7 +48,8 @@ export default function LoginPage(handleIsLoggedIn){
           // store the token in a session cookie
           sessionStorage.setItem("user_token", JSON.stringify(token));
           handleIsLoggedIn;
-          router.refresh();
+          window.location.reload();
+          // router.refresh();
         });
       } else {
         res.json().then((err) => setErrors(err.error));

@@ -31,7 +31,7 @@ export default function LaptopsPage() {
 	return (
     <div>
       <div className="overflow-x-hidden">
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="laptops">Laptops</h1>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center" id="laptops">Laptops</h1>
         <div className="flex flex-wrap h-max overflow-x-hidden overflow-y-auto gap-1 my-2 w-full">
             <DataCard
             devices={laptops}

@@ -31,11 +31,13 @@ export default function DesktopsPage() {
 	return (
     <div>
       <div>
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="desktops">Desktops</h1>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center" id="desktops">Desktops</h1>
         <div className="flex flex-wrap h-max overflow-x-hidden overflow-y-auto gap-1 my-2">
           <DataCard
           devices={desktops}
           keys={keys}
+          width={400}
+          height={400}
           />
         </div>
       </div>

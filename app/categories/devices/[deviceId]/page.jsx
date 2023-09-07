@@ -14,8 +14,8 @@ const DevicePage = ({ params }) => {
   const [ device, setDevice ] = useState([]);
   const [ devices, setDevices ] = useState([]);
   const [ properties, setProperties ] = useState([]);
-  const image_url = '/home/koome/Documents/Projects/Python/E-COMMERCE/backend' + JSON.stringify(device.image);
-  // console.log(image_url)
+  const [ images, setImages ] = useState([]);
+  // const token = JSON.parse(sessionStorage.getItem('user_token')).key;
 
   useEffect(() => {
     const fetchDevice = async () => {
@@ -24,12 +24,13 @@ const DevicePage = ({ params }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // Authorization: `Bearer ${token}`,
+          // Authorization: `Token ${token}`,
         },
       });
       const data = await res.json();
       setDevice(data);
       setProperties(data.productproperties);
+      setImages(data.image);
     };
     fetchDevice();
   }, [deviceId]);
@@ -41,7 +42,7 @@ const DevicePage = ({ params }) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // Authorization: `Bearer ${token}`,
+          // Authorization: `Token ${token}`,
         },
       });
       const data = await res.json();
@@ -49,7 +50,6 @@ const DevicePage = ({ params }) => {
     };
     fetchDevices();
   }, []);
-
   
 
   ShuffleArray({queryArray: devices});
@@ -64,7 +64,7 @@ const DevicePage = ({ params }) => {
       <div className="flex justify-center w-full">
         <div className="flex flex-row w-1/3 gap-1 overflow-hidden">
           <Image
-          src={image_url}
+          src={images[0]}
           alt={device.device_model}
           width={500}
           height={500}
@@ -72,7 +72,7 @@ const DevicePage = ({ params }) => {
           />
         </div>
       </div>
-    <div className="bg-gray-600">
+    <div className="bg-black-600">
       <div className="mx-20 ">
           <div className="font-bold text-center text-xl uppercase">{(device.device_brand + " " + device.device_model)}</div>
           <div className="text-green-500 text-xl mx-20 justify-right">{device.price}</div>
@@ -91,7 +91,7 @@ const DevicePage = ({ params }) => {
     </div>
     
     <div className="h-fit">
-      <h1 className="bg-gray-500 w-full text-center"> More on {device.category}</h1>
+      <h1 className="bg-cyan-950 w-full text-center"> More on {device.category}</h1>
       <div className="flex flex-row gap-1 h-48 text-xs overflow-x-auto overflow-y-hidden">
         <SuggestionCard
         devices={currentCategory}
@@ -99,8 +99,8 @@ const DevicePage = ({ params }) => {
       </div>
     </div>
     <div>
-      <div className="bg-gray-500 w-full text-center font-bold">Explore other devices</div>
-      <div className="flex flex-row flex-wrap overflow-x-hidden gap-1">
+      <div className="bg-cyan-950 w-full text-center font-bold">Explore other devices</div>
+      <div className="flex flex-row flex-wrap overflow-x-hidden ">
         <DataCard
         devices={suggestions}
         keys={"keys"}
@@ -109,7 +109,7 @@ const DevicePage = ({ params }) => {
         />
       </div>
     </div>
-    <div className="fixed bottom-0  min-w-fit w-screen flex flex-row bg-gray-800 justify-center text-white">
+    <div className="fixed bottom-0  min-w-fit w-screen flex flex-row bg-cyan-950 justify-center text-white">
       <button
       onClick={handleAddToCart}
       className="flex flex-row">

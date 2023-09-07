@@ -16,11 +16,9 @@ import { NavLink } from "@mantine/core";
 import { useState, useEffect } from "react";
 import LoginPage from '@/components/Login';
 import { Button } from '@mui/material';
-import generateMetadata from '@/components/GenerateMetadata';
-import Head from 'next/head';
+
 
 const inter = Inter({ subsets: ['latin'] })
-
 
 
 export default function RootLayout({ children }) {
@@ -31,8 +29,13 @@ export default function RootLayout({ children }) {
   const [ token, setToken ] = useState("");
   
 
-  useEffect(() => {if (window && user) {
-    setToken(JSON.parse(sessionStorage.getItem("user_token")).key);
+  useEffect(() => {
+    if (window) {
+      try {
+        setToken(JSON.parse(sessionStorage.getItem("user_token")).key);
+      } catch (error) {
+        console.log(error);
+      }
   }}, [isLoggedIn]);
 
   useEffect(() => {
@@ -51,12 +54,6 @@ export default function RootLayout({ children }) {
     fetchUserDetails();
   }, [token]);
 
-  useEffect(() => {
-    if (window) {
-      setUser(JSON.parse(sessionStorage.getItem("user_token")));
-      router.refresh();
-    }
-  }, [isLoggedIn]);
 
   function handleLogout() {
     fetch("http://localhost:8888/api/auth/logout/", {
@@ -66,6 +63,7 @@ export default function RootLayout({ children }) {
         Accept: "application/json",
       },
     }).then((res) => {
+      setToken(null);
       setUser(null);
       sessionStorage.clear();
       router.refresh();
@@ -76,17 +74,17 @@ export default function RootLayout({ children }) {
     setIsLoggedIn(isLoggedIn => !isLoggedIn);
     router.refresh();
   }
-
+    
+  
   return (
     <html lang="en">
-      
       <body className={inter.className}>
-        {token ? 
+        {user ? 
         <div > 
           <div className="flex flex-row ">
-            <div className="fixed right-0 bottom-0 top-0 w-2 bg-gray-950"></div>
+            <div className="fixed right-0 bottom-0 top-0 w-2 bg-black-950"></div>
             {!navCollapsed ?
-              <div className="navbar bg-gray-950 w-96 h-screen overflow-y-auto sticky bottom-0 top-0 left-0">               
+              <div className="navbar bg-black-950 w-96 h-screen overflow-y-auto sticky bottom-0 top-0 left-0 border-r-2 border-gray-800">               
                 <div className="links-container flex flex-col justify-start py-5">
                   <NavLink
                     label="Home Page"
@@ -224,11 +222,18 @@ export default function RootLayout({ children }) {
                     href="/checkout"
                   />
                 </div>
+                <div className='flex justify-center bottom-0'>
+                  <Button
+                  onClick={handleLogout}
+                  className='bg-blue-600 text-white'
+                  > Logout
+                  </Button>
+                </div>
               </div>
-              : <div className="sticky left-0 bottom-0 top-0 w-2 bg-gray-950 h-screen"></div>
+              : <div className="sticky left-0 bottom-0 top-0 w-5 border-r-2 border-r-gray-800 bg-black-950 h-screen"></div>
             }
             <div className="flex flex-col overflow-x-hidden w-full">
-              <div className="sticky top-0 right-0 m-x-6 flex font-bold text-lg text-white min-h-fit max-h-fit justify-between bg-gray-950">
+              <div className="sticky top-0 right-0 m-x-6 flex font-bold text-lg text-white min-h-fit max-h-fit justify-between bg-cyan-950 border-b-2 border-b-gray-800">
                 <button
                 onClick={() => setNavCollapsed(!navCollapsed)}>
                   {navCollapsed ?
@@ -245,7 +250,8 @@ export default function RootLayout({ children }) {
                 href={"/account"}
                 >
                   <RiUserSettingsLine size={28} color="white" title='Logged in user' /> 
-                  {user.first_name} 
+                  {/* {user.first_name} */}
+                  {user ? user.first_name : "Not Logged in"} 
                 </Link>
               </div>
               
@@ -254,9 +260,9 @@ export default function RootLayout({ children }) {
               </div>
           </div>
         </div>
-        : <LoginPage handleIsLoggedIn={handleIsLoggedIn}/>
-        }
+         : <LoginPage handleIsLoggedIn={handleIsLoggedIn}/> 
+         } 
       </body>
     </html>
-  )
+  );
 }

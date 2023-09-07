@@ -31,11 +31,11 @@ export default function ProjectorsPage() {
 	return (
     <div>
       <div>
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="projectors">Projectors</h1>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center" id="projectors">Projectors</h1>
         <div className="flex flex-wrap h-max overflow-x-hidden overflow-y-auto gap-1 my-2">
           <DataCard
           devices={projectors}
-          keys={keys}
+          keys={keys} height={400} weight={400}
           />
         </div>
       </div>
