@@ -15,21 +15,23 @@ export default function DataCard({
       {devices.map((device) => (
         <Link 
           href={`/categories/devices/${device.id}`}
-          className="bg-white text-black rounded container w-80"
+          className="bg-black rounded container w-1/2 md:w-80 border-2 border-gray-800"
         >
           <div
             className="flex flex-row p-3  justify-around rounded-md mb-10"
           >
             <div className="h-50 flex flex-col rounded">
               <Image
-                src={device.image_url}
+                src={device.image[0]}
                 alt={device.device_model}
                 width={width}
                 height={height}
               />
-              <h1 className="text-lg font-bold text-center">{(device.device_brand + " " + device.device_model).toUpperCase()}</h1>
-              <div className="bold flex flex-row">Price: <div className="text-green-500"> {device.price}</div> Ksh</div>
-              <div>{device.description}</div>
+              <div className="m-l-2">
+                <h1 className="text-lg font-bold text-center">{(device.device_brand + " " + device.device_model).toUpperCase()}</h1>
+                <div className="bold flex flex-row">Price: <div className="text-green-500"> {device.price}</div> Ksh</div>
+                <div>{device.description}</div>
+              </div>
             </div>
           </div>
         </Link>
@@ -47,14 +49,14 @@ export function SuggestionCard({
       {devices.map((device) => (
         <Link 
           href={`/categories/devices/${device.id}`}
-          className="bg-white text-black rounded text-sm"
+          className="bg-black  rounded text-sm border-x-2 border-x-gray-800"
         >
           <div
             className="flex flex-row p-3 w-80 rounded-md mb-10"
           >
             <div className=" flex flex-row rounded">
               <Image
-                src={device.image_url}
+                src={device.image[0]}
                 alt={device.device_model}
                 width={150}
                 height={150}

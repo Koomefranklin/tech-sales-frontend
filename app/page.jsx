@@ -1,6 +1,7 @@
 "use client"
 import DataCard from "@/components/Templates";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 
 export default function HomePage() {
   const [ devices, setDevices ] = useState([]);
@@ -39,7 +40,7 @@ export default function HomePage() {
 	return (
     <div>
       <div>
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="desktops">Desktops</h1>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center" id="desktops">Desktops</h1>
         <div className="flex flex-row h-max overflow-x-auto gap-1 my-2">
           <DataCard
           devices={desktops}
@@ -49,8 +50,8 @@ export default function HomePage() {
           />
         </div>
       </div>
-      <div className="w-full">
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="laptops">Laptops</h1>
+      <div>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center" id="laptops">Laptops</h1>
         <div className="flex flex-row h-max overflow-x-auto gap-1 my-2">
           <DataCard
           devices={laptops}
@@ -61,7 +62,7 @@ export default function HomePage() {
         </div>
       </div>
       <div>
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center" id="monitors">Monitors</h1>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center" id="monitors">Monitors</h1>
         <div className="flex flex-row h-max overflow-x-auto gap-1 my-2">
           <DataCard
           devices={monitors}
@@ -72,7 +73,7 @@ export default function HomePage() {
         </div>
       </div>
       <div>
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center">Networking</h1>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center">Networking</h1>
         <div className="flex flex-row h-max overflow-x-auto gap-1 my-2">
           <DataCard
           devices={networking}
@@ -83,7 +84,7 @@ export default function HomePage() {
         </div>
       </div>
       <div>
-        <h1 className="bg-gray-800 text-white text-xl w-full text-center">Accessories</h1>
+        <h1 className="bg-black-800 text-white text-xl w-full text-center">Accessories</h1>
         <div className="flex flex-row h-max overflow-x-auto gap-1 my-2">
           <DataCard
           devices={accessories}

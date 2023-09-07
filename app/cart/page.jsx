@@ -57,8 +57,8 @@ export default function CartPage() {
  
   return (
     <>
-      <div className="flex justify-center rounded">
-          <Table aria-label="Cart Items" className="uppercase bg-white md:w-1/2 rounded">
+      <div className="flex justify-center rounded ">
+          <Table aria-label="Cart Items" className="uppercase bg-black  md:w-1/2 rounded text-white!">
             <TableHead >
               <TableRow className="h-2">
                 <TableCell className="font-bold">
@@ -83,11 +83,11 @@ export default function CartPage() {
                 <TableRow
                 key={item.id}
                 hover={true}
-                onClick={handleRowClick(item.id)}
+                // onClick={handleRowClick(item.id)}
                 >
                   <TableCell className="flex flex-row">
                     <Image
-                    src={item.product.image_url}
+                    src={item.product.image[0]}
                     alt={item.product.device_model}
                     height={100}
                     width={100}
@@ -137,7 +137,7 @@ export default function CartPage() {
                 <TableCell className="font-bold">
                   Total amount: 
                 </TableCell>
-                <TableCell className="font_bold text-l">
+                <TableCell className="font-bold text-l">
                 {totalAmount}
                 </TableCell>
               </TableRow>
