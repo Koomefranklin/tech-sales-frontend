@@ -18,8 +18,8 @@ export default function LoginPage(handleIsLoggedIn){
     phone_number: "",
     password: "",
   })
-
   const router = useRouter();
+  const api = process.env.NEXT_PUBLIC_API_SERVER;
 
   function handleChange(e) {
     const name = e.target.name;
@@ -30,7 +30,7 @@ export default function LoginPage(handleIsLoggedIn){
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetch("http://localhost:8888/api/auth/login/", {
+    fetch(`${api}/auth/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

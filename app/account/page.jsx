@@ -16,10 +16,11 @@ export default function UserProfile() {
     password: "****",
     phone_number: "",
   });
+  const api = process.env.NEXT_PUBLIC_API_SERVER;
   
   useEffect (() => {
     const fetchUserDetails = async() => {
-      const res = await fetch(`http://localhost:8888/api/users`, {
+      const res = await fetch(`${api}/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

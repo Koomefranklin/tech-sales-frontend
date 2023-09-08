@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 export default function MicePage() {
   const [ devices, setDevices ] = useState([]);
   const [ mice, setMice ] = useState([]);
+  const api = process.env.NEXT_PUBLIC_API_SERVER;
   
 
   useEffect(() => {
     const fetchDevices = async () => {
-      const res = await fetch("http://localhost:8888/api/devices", {
+      const res = await fetch(`${api}/devices`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

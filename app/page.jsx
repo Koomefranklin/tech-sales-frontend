@@ -1,7 +1,6 @@
 "use client"
 import DataCard from "@/components/Templates";
 import { useEffect, useState } from "react";
-import Head from "next/head";
 
 export default function HomePage() {
   const [ devices, setDevices ] = useState([]);
@@ -10,11 +9,11 @@ export default function HomePage() {
   const [ networking, setNetworking ] = useState([]);
   const [ monitors, setMonitors ] = useState([]);
   const [ accessories, setAccessories ] = useState([]);
-  
+  const api = process.env.NEXT_PUBLIC_API_SERVER
 
   useEffect(() => {
     const fetchDevices = async () => {
-      const res = await fetch("http://localhost:8888/api/devices", {
+      const res = await fetch(`${api}devices`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

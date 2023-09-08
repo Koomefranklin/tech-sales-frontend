@@ -15,16 +15,17 @@ const DevicePage = ({ params }) => {
   const [ devices, setDevices ] = useState([]);
   const [ properties, setProperties ] = useState([]);
   const [ images, setImages ] = useState([]);
-  // const token = JSON.parse(sessionStorage.getItem('user_token')).key;
+  const api = process.env.NEXT_PUBLIC_API_SERVER;
+  const token = JSON.parse(sessionStorage.getItem('user_token')).key;
 
   useEffect(() => {
     const fetchDevice = async () => {
-      const res = await fetch(`http://localhost:8888/api/devices/${deviceId}`, {
+      const res = await fetch(`${api}/devices/${deviceId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // Authorization: `Token ${token}`,
+          Authorization: `Token ${token}`,
         },
       });
       const data = await res.json();
@@ -37,12 +38,12 @@ const DevicePage = ({ params }) => {
 
   useEffect(() => {
     const fetchDevices = async () => {
-      const res = await fetch(`http://localhost:8888/api/devices`, {
+      const res = await fetch(`${api}/devices`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          // Authorization: `Token ${token}`,
+          Authorization: `Token ${token}`,
         },
       });
       const data = await res.json();
@@ -58,7 +59,7 @@ const DevicePage = ({ params }) => {
   function handleAddToCart() {
 
   }
-
+  
   return (
     <div>
       <div className="flex justify-center w-full">

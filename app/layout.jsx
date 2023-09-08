@@ -17,9 +17,7 @@ import { useState, useEffect } from "react";
 import LoginPage from '@/components/Login';
 import { Button } from '@mui/material';
 
-
-const inter = Inter({ subsets: ['latin'] })
-
+const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }) {
   const router = useRouter();
@@ -27,7 +25,7 @@ export default function RootLayout({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [ token, setToken ] = useState("");
-  
+  const api = process.env.NEXT_PUBLIC_API_SERVER;
 
   useEffect(() => {
     if (window) {
@@ -40,7 +38,7 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     const fetchUserDetails = async() => {
-      const res = await fetch(`http://localhost:8888/api/auth/user`, {
+      const res = await fetch(`${api}/auth/user`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -49,14 +47,17 @@ export default function RootLayout({ children }) {
         },
       });
       const data = await res.json();
+      sessionStorage.setItem('user_details', data);
       setUser(data);
     }
-    fetchUserDetails();
+    if (!user) {
+      fetchUserDetails();
+    }
   }, [token]);
 
 
   function handleLogout() {
-    fetch("http://localhost:8888/api/auth/logout/", {
+    fetch(`${api}/auth/logout/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,6 +79,9 @@ export default function RootLayout({ children }) {
   
   return (
     <html lang="en">
+      <head>
+        <title>Mburus Tech</title>
+      </head>
       <body className={inter.className}>
         {user ? 
         <div > 

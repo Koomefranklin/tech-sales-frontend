@@ -1,10 +1,7 @@
-const generateMetadata = ({ page }) => {
-  return {
-    title: page.title,
-    description: page.description,
-    keywords: page.keywords,
-    image: page.image,
-  };
-};
-
-export default generateMetadata;
+export const metadata = {
+  title: {
+    default: 'Mburus Tech',
+    template: '%s | MburusTech',
+    absolute: 'Home',
+  },
+}

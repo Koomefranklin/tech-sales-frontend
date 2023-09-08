@@ -13,11 +13,12 @@ export default function CartPage() {
   const [ userCart, setUserCart ] = useState([]);
   const token = JSON.parse(sessionStorage.getItem("user_token")).key;
   const router = useRouter();
+  const api = process.env.NEXT_PUBLIC_API_SERVER;
   // const [ totalAmount, setTotalAmount ] = useState()
 
   useEffect(() => {
     const fetchUserCart = async () => {
-      const res = await fetch(`http://localhost:8888/api/cart`, {
+      const res = await fetch(`${api}/cart`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
