@@ -81,7 +81,7 @@ export default function LoginPage(handleIsLoggedIn){
             name="email"
             id="email"
             className="border border-white bg-black sm:text-sm rounded-md focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-            placeholder="name@company.com"
+            placeholder="example@mailer.mail"
             onChange={handleChange}
             value={loginForm.email}
             required={true}
