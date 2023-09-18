@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaChevronRight, FaComputerMouse, FaCartShopping } from "react-icons/fa6";
-import { RiUserSettingsLine, RiRouterFill } from "react-icons/ri";
+import { RiUserSettingsLine, RiRouterFill, RiMenuFoldFill, RiMenuUnfoldFill } from "react-icons/ri";
 import { MdMenuOpen, MdOutlineShoppingCartCheckout, MdStorage, MdComputer, MdOutlineDesktopWindows, MdMenu } from "react-icons/md";
 import { HiSwitchVertical } from "react-icons/hi"
 import { FcHeadset, FcVideoProjector } from "react-icons/fc"
@@ -15,7 +15,7 @@ import { BiCategory, BiSolidServer } from "react-icons/bi"
 import { NavLink } from "@mantine/core";
 import { useState, useEffect } from "react";
 import LoginPage from '@/components/Login';
-import { Button } from '@mui/material';
+import { Button, Toolbar, IconButton, Typography } from '@mui/material';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
   const router = useRouter();
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+  const [ user, setUser ] = useState(null);
   const [ token, setToken ] = useState("");
   const api = process.env.NEXT_PUBLIC_API_SERVER;
 
@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     const fetchUserDetails = async() => {
-      const res = await fetch(`${api}/auth/user`, {
+      const res = await fetch(`${api}/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -47,14 +47,16 @@ export default function RootLayout({ children }) {
         },
       });
       const data = await res.json();
-      sessionStorage.setItem('user_details', data);
-      setUser(data);
+      setUser(data[0]);
     }
-    if (!user) {
       fetchUserDetails();
-    }
   }, [token]);
 
+  useEffect(() => {
+    if(user) {
+      sessionStorage.setItem("user_details", JSON.stringify(user));
+    }
+  }, [user]);
 
   function handleLogout() {
     fetch(`${api}/auth/logout/`, {
@@ -83,13 +85,28 @@ export default function RootLayout({ children }) {
         <title>Mburus Tech</title>
       </head>
       <body className={inter.className}>
+        <div className="sticky top-0 right-0 flex justify-between font-bold text-xl p-2 text-white min-h-fit h-12 bg-cyan-950 border-b-2 border-b-gray-800">
+          <div className='ml-6'>Page Title</div>
+          <Link href="/" className='flex ms-10 text-l'>Mburus Tech</Link>
+          <Link className="flex mr-6"
+          title='User profile'
+          href={"/account"}
+          >
+            <RiUserSettingsLine size={28} color="white" title='Logged in user' />
+            {user ? user.first_name : "Not Logged in"} 
+          </Link>
+        </div>
         {user ? 
         <div > 
           <div className="flex flex-row ">
-            <div className="fixed right-0 bottom-0 top-0 w-2 bg-black-950"></div>
             {!navCollapsed ?
               <div className="navbar bg-black-950 w-96 h-screen overflow-y-auto sticky bottom-0 top-0 left-0 border-r-2 border-gray-800">               
-                <div className="links-container flex flex-col justify-start py-5">
+                <div className="links-container flex flex-col justify-start py-2">
+                <button
+                onClick={() => setNavCollapsed(true)}
+                className='flex justify-end mr-2'>
+                  <RiMenuFoldFill size={28} color='white'/>
+                </button>
                   <NavLink
                     label="Home Page"
                     icon={<AiFillHome size={28} color="white" />}
@@ -234,31 +251,15 @@ export default function RootLayout({ children }) {
                   </Button>
                 </div>
               </div>
-              : <div className="sticky left-0 bottom-0 top-0 w-5 border-r-2 border-r-gray-800 bg-black-950 h-screen"></div>
+              : <div className="sticky left-0 bottom-0 top-0 w-7 border-r-2 border-r-gray-800 bg-black h-screen">
+                  <button
+                  onClick={() => setNavCollapsed(false)}>
+                    <RiMenuUnfoldFill size={28} color='white'/>
+                  </button>
+                
+              </div>
             }
             <div className="flex flex-col overflow-x-hidden w-full">
-              <div className="sticky top-0 right-0 m-x-6 flex font-bold text-lg text-white min-h-fit max-h-fit justify-between bg-cyan-950 border-b-2 border-b-gray-800">
-                <button
-                onClick={() => setNavCollapsed(!navCollapsed)}>
-                  {navCollapsed ?
-                    <MdMenu size={28} color='white'/>
-                    :
-                    <MdMenuOpen size={28} color='white'/>
-                  }
-                </button>
-                <h1 className='justify-center ms-10'>
-                  <Link href="/">Mburus Tech</Link>
-                </h1>
-                <Link className="flex me-10 "
-                title='User profile'
-                href={"/account"}
-                >
-                  <RiUserSettingsLine size={28} color="white" title='Logged in user' /> 
-                  {/* {user.first_name} */}
-                  {user ? user.first_name : "Not Logged in"} 
-                </Link>
-              </div>
-              
               <div>{children}</div> 
               
               </div>
