@@ -7,6 +7,7 @@ import { FaCartPlus } from "react-icons/fa6";
 import Link from "next/link";
 import ShuffleArray from "@/components/Arrangements";
 import { useInterval } from "@mantine/hooks";
+import AddToCart from "@/components/AddToCart";
 
 
 const DevicePage = ({ params }) => {
@@ -58,6 +59,14 @@ const DevicePage = ({ params }) => {
   const suggestions = devices.filter(item => !deviceId.includes(item.id) && item.category !== device.category);
   function handleAddToCart() {
 
+  }
+
+  function handleAddToCart (){
+    AddToCart({
+      user: JSON.parse(sessionStorage.getItem('user_details')).id,
+      product: deviceId,
+      quantity: 5,
+    })
   }
   
   return (
