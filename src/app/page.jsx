@@ -13,7 +13,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchDevices = async () => {
-      const res = await fetch(`${api}devices`, {
+      const res = await fetch(`${api}/devices`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
