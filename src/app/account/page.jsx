@@ -9,22 +9,24 @@ import { RiOrderPlayFill } from "react-icons/ri";
 
 export default function UserProfile() {
   const [ token, setToken ] = useState(null);
-  const [ userDetails, setUserDetails ] = useState(null);
+  const [ userDetails, setUserDetails ] = useState({});
   useEffect(() => {
       if(typeof window !== 'undefined' && window.sessionStorage) {
         setToken(JSON.parse(sessionStorage.getItem("user_token")).key);
         setUserDetails(JSON.parse(sessionStorage.getItem('user_details')));
+        
       }
+      
     }, [])
 
   const [ formData, setFormData ] = useState({
-    email: userDetails.email,
-    username: userDetails.username,
-    first_name: userDetails.first_name,
-    surname: userDetails.surname,
-    last_name: userDetails.last_name,
-    password: "",
-    phone_number: userDetails.phone_number,
+        email: userDetails.email,
+        username: userDetails.username,
+        first_name: userDetails.first_name,
+        surname: userDetails.surname,
+        last_name: userDetails.last_name,
+        password: "",
+        phone_number: userDetails.phone_number,
   });
   const api = process.env.NEXT_PUBLIC_API_SERVER;
 
