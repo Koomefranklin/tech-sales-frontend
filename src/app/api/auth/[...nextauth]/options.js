@@ -21,13 +21,16 @@ export const options = {
 			},
 			authorize: async (credentials) => {
 				try {
-					const response = await fetch(`http://localhost:8888/auth/login/`, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(credentials),
-					});
+					const response = await fetch(
+						`https://fkoome.pythonanywhere.com/api/auth/login/`,
+						{
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(credentials),
+						}
+					);
 					if (response.ok) {
 						const user = response.data;
 						sessionStorage.setItem('user', JSON.stringify(user));

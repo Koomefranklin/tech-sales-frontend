@@ -13,7 +13,8 @@ export default function DataCard({
   return (
     <>
       {devices.map((device) => (
-        <Link 
+        <Link
+          key={device.id}
           href={`/categories/devices/${device.id}`}
           className="bg-black rounded container w-1/2 md:w-80 border-2 border-gray-800"
         >
@@ -47,7 +48,8 @@ export function SuggestionCard({
   return (
     <>
       {devices.map((device) => (
-        <Link 
+        <Link
+          key={device.id}
           href={`/categories/devices/${device.id}`}
           className="bg-black  rounded text-sm border-x-2 border-x-gray-800"
         >
@@ -81,25 +83,25 @@ export function CartItems({
   return (
     <div className="w-full justify-center">
       {devices.map(device => (
-        <table className="w-fit flex ">
+        <table key={device.id} className="w-fit flex ">
           <Link
-          href={`/categories/devices/${device.id}`}>
+            href={`/categories/devices/${device.id}`}>
             <tr className="flex flex-row">
               <td className="flex flex-row">
                 <Image
-                src={device.image}
-                alt={device.model}
-                width={100}
-                height={100}
+                  src={device.image}
+                  alt={device.model}
+                  width={100}
+                  height={100}
                 />{(device.brand + " " + device.model).toUpperCase()}
               </td>
               <td>{device.price}</td>
               <td>{device.quantity}</td>
               <td>{device.price * device.quantity}</td>
               <td>
-                <FaPlus/>
-                <FaMinus/>
-                <FaCartArrowDown/>
+                <FaPlus />
+                <FaMinus />
+                <FaCartArrowDown />
               </td>
             </tr>
           </Link>

@@ -11,10 +11,16 @@ import { useRouter } from "next/navigation";
 export default function CartPage() {
   const [ devices, setDevices ] = useState([]);
   const [ userCart, setUserCart ] = useState([]);
-  const token = JSON.parse(sessionStorage.getItem("user_token")).key;
+  const [ token, setToken ] = useState(null);
   const router = useRouter();
   const api = process.env.NEXT_PUBLIC_API_SERVER;
   // const [ totalAmount, setTotalAmount ] = useState()
+
+  useEffect(() => {
+    if(typeof window !== 'undefined' && window.sessionStorage) {
+      setToken(JSON.parse(sessionStorage.getItem("user_token")).key);
+    }
+  }, [])
 
   useEffect(() => {
     const fetchUserCart = async () => {

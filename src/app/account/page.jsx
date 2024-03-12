@@ -8,8 +8,15 @@ import { RiOrderPlayFill } from "react-icons/ri";
 
 
 export default function UserProfile() {
-  const token = JSON.parse(sessionStorage.getItem("user_token")).key;
-  const userDetails = JSON.parse(sessionStorage.getItem('user_details'));
+  const [ token, setToken ] = useState(null);
+  const [ userDetails, setUserDetails ] = useState(null);
+  useEffect(() => {
+      if(typeof window !== 'undefined' && window.sessionStorage) {
+        setToken(JSON.parse(sessionStorage.getItem("user_token")).key);
+        setUserDetails(JSON.parse(sessionStorage.getItem('user_details')));
+      }
+    }, [])
+
   const [ formData, setFormData ] = useState({
     email: userDetails.email,
     username: userDetails.username,
@@ -20,6 +27,8 @@ export default function UserProfile() {
     phone_number: userDetails.phone_number,
   });
   const api = process.env.NEXT_PUBLIC_API_SERVER;
+
+ 
 
   function handleUserFormChange(e){
     const name = e.target.name
